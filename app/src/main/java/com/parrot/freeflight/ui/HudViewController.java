@@ -72,7 +72,9 @@ public class HudViewController
 	private static final int USB_INDICATOR_TEXT_ID = 17;
 	private static final int BACK_BTN_ID = 18;
 	private static final int LAND_ID = 19;
-	
+	private static final int FOLLOW_ID = 20; // Modified!
+
+
 	private Image bottomBarBg;
 	
 	private Button btnSettings;
@@ -83,7 +85,9 @@ public class HudViewController
 	private Button btnPhoto;
 	private Button btnBack;
 	private ToggleButton btnRecord;
-	
+	private Button btnFollow; // Modified
+
+
 	private Button[] buttons;
 	
 	private Indicator batteryIndicator;
@@ -149,7 +153,7 @@ public class HudViewController
 		Resources res = context.getResources();
 
 		btnSettings = new Button(res, R.drawable.btn_settings, R.drawable.btn_settings_pressed, Align.TOP_LEFT);
-		btnSettings.setMargin(0, 0, 0, (int)res.getDimension(R.dimen.hud_btn_settings_margin_left));
+		btnSettings.setMargin(0, 0, 0, (int) res.getDimension(R.dimen.hud_btn_settings_margin_left));
 		
 		btnBack = new Button(res, R.drawable.btn_back, R.drawable.btn_back_pressed, Align.TOP_LEFT);
 		btnBack.setMargin(0, 0, 0, res.getDimensionPixelOffset(R.dimen.hud_btn_back_margin_left));
@@ -158,6 +162,8 @@ public class HudViewController
 		btnTakeOff = new Button(res, R.drawable.btn_take_off_normal, R.drawable.btn_take_off_pressed, Align.BOTTOM_CENTER);		
 		btnLand = new Button(res, R.drawable.btn_landing, R.drawable.btn_landing_pressed, Align.BOTTOM_CENTER);      
 		btnLand.setVisible(false);
+		btnFollow = new Button(res, R.drawable.btn_take_off_normal, R.drawable.btn_take_off_pressed, Align.BOTTOM_RIGHT); // Modified!
+		btnFollow.setVisible(true);		// Modified!
 		
 		Image topBarBg = new Image(res, R.drawable.barre_haut, Align.TOP_CENTER);
 		topBarBg.setSizeParams(SizeParams.FILL_SCREEN, SizeParams.NONE);
@@ -219,8 +225,8 @@ public class HudViewController
 		
 		wifiIndicator = new Indicator(res, wifiIndicatorRes, Align.TOP_LEFT);
 		wifiIndicator.setMargin(0, 0, 0, (int)res.getDimension(R.dimen.hud_wifi_indicator_margin_left));
-		
-		buttons = new Button[8];
+
+		buttons = new Button[9]; // Modified
 		buttons[0] = btnSettings;
 		buttons[1] = btnEmergency;
 		buttons[2] = btnTakeOff;
@@ -229,6 +235,7 @@ public class HudViewController
 		buttons[5] = btnRecord;
 		buttons[6] = btnCameraSwitch;
 		buttons[7] = btnBack;
+		buttons[8] = btnFollow; // Modified
 		
 		
 		txtAlert = new Text(context, "", Align.TOP_CENTER);
@@ -255,6 +262,7 @@ public class HudViewController
 		renderer.addSprite(RECORD_LABEL_ID, txtRecord);
 		renderer.addSprite(USB_INDICATOR_ID, usbIndicator);
 		renderer.addSprite(USB_INDICATOR_TEXT_ID, txtUsbRemaining);
+		renderer.addSprite(FOLLOW_ID, btnFollow); // Modified!
 	}
 	
 	
