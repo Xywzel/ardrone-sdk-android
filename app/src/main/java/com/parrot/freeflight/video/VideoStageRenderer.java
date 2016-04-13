@@ -61,7 +61,7 @@ public class VideoStageRenderer implements Renderer {
         "uniform float fAlpha ;\n" +
         "void main(){              \n" +
 		" vTextureCoord.x = vTextureCoord.x * 2.0;\n" +
-		" if (vTextureCoord.x > 1.0) vTextureCoord.x -= 1.0; \n" +
+		" if (vTextureCoord.x > 1.0) vTextureCoord.x = vTextureCoord.x - 1.0; \n" +
 		" vec4 color = texture2D(sTexture, vTextureCoord); \n" +
         " gl_FragColor = vec4(color.xyz, color.w * fAlpha );\n" +
 		" //gl_FragColor = vec4(0.6, 0.7, 0.2, 1.0); \n" +
