@@ -4,6 +4,7 @@ public class GLES20
 {
 	static {
 		System.loadLibrary("glfix");
+        System.loadLibrary("opencv_java3");
 	}
 	
     native public static void glVertexAttribPointer(int index, int size, int type, boolean normalized, int stride, int offset);

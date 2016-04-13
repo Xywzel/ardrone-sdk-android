@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.opengl.GLES20;
 
+
 public class GLBGVideoSprite extends GLSprite 
 {
 	private static final String TAG = GLBGVideoSprite.class.getSimpleName();
@@ -75,7 +76,6 @@ public class GLBGVideoSprite extends GLSprite
 	{   if (!isVideoReady) {
 	        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT);
 	    }
-	    
 		super.onDraw(gl, this.x, this.y);
 	}
 
@@ -117,7 +117,10 @@ public class GLBGVideoSprite extends GLSprite
 					
 					video = Bitmap.createBitmap(videoWidth, videoHeight, Bitmap.Config.RGB_565);
 					matrix.reset();
-					
+
+
+
+
 					if (videoWidth != 0 && videoHeight != 0) {
 						matrix.setScale((float)screenHeight / (float)videoHeight, (float)screenHeight / (float)videoHeight);
 					}
