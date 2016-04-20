@@ -81,6 +81,8 @@ import com.parrot.freeflight.ui.hud.JoystickListener;
 import com.parrot.freeflight.utils.NookUtils;
 import com.parrot.freeflight.utils.SystemUtils;
 
+import fileops.FlightPath;
+
 @SuppressLint("NewApi")
 public class ControlDroneActivity
         extends ParrotActivity
@@ -642,6 +644,17 @@ public class ControlDroneActivity
                 }
 
                 return false;
+            }
+        });
+
+        view.setBtnFlightPathsClickListener(new OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                if (droneControlService != null) {
+                    Intent flightPathSelectActivity = new Intent(ControlDroneActivity.this, FlightPathSelectActivity.class);
+                    startActivity(flightPathSelectActivity);
+                }
             }
         });
     }

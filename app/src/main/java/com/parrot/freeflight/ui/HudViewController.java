@@ -601,7 +601,11 @@ public class HudViewController
 	{
 		gestureDetector.setOnDoubleTapListener(listener);	
 	}
-	
+
+	public void setBtnFlightPathsClickListener(OnClickListener listener)
+	{
+		this.btnFlightPaths.setOnClickListener(listener);
+	}
 	
 	public void onPause()
 	{
