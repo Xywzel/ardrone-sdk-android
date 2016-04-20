@@ -15,5 +15,6 @@
         android:text="Select Flight Path"
         android:id="@+id/buttonSelectFlightPath"
         android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:onClick="flightPathSelectOnClick" />
 </RelativeLayout>

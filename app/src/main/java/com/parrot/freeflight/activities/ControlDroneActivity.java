@@ -653,7 +653,7 @@ public class ControlDroneActivity
             {
                 if (droneControlService != null) {
                     Intent flightPathSelectActivity = new Intent(ControlDroneActivity.this, FlightPathSelectActivity.class);
-                    startActivity(flightPathSelectActivity);
+                    startActivityForResult(flightPathSelectActivity,40); // 40 on randomilla valittu
                 }
             }
         });
