@@ -42,6 +42,7 @@ public class SvgReader {
         } else {
             String simplePath = pathLine.replace("d=\"M", "").replace("z", "").trim();
             String[] places = simplePath.split("L");
+            coordinates = new Vector<>();
             for(String place : places){
                 Float a = Float.parseFloat(place.trim().split(" ")[0]);
                 Float b = Float.parseFloat(place.trim().split(" ")[1]);
