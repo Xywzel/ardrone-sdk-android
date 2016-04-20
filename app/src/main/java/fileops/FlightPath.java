@@ -16,7 +16,7 @@ public class FlightPath {
     public FlightPath(Vector<Pair<Float, Float>> coordinates){
         currentIndex = 0;
         float maxDist = 0.0f;
-        Vector<Pair<Float, Float>> centralCoordinates = new Vector<>();
+        Vector<Pair<Float, Float>> centralCoordinates = new Vector();
         for(Pair<Float, Float> coord : coordinates) {
             Float x = coord.first - coordinates.elementAt(0).first;
             Float y = coord.second - coordinates.elementAt(0).second;
@@ -25,7 +25,7 @@ public class FlightPath {
             }
             centralCoordinates.add(new Pair<Float, Float>(x,y));
         }
-        normalizedCoordinates = new Vector<>();
+        normalizedCoordinates = new Vector();
         Float factor = 100.0f / maxDist;
         for (Pair<Float, Float> coord : centralCoordinates){
             normalizedCoordinates.add(new Pair<Float, Float>(coord.first * factor, coord.second * factor));

@@ -162,12 +162,4 @@
         android:layout_marginRight="@dimen/hud_joy_margin"
         android:src="@drawable/joystick_halo" />
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Fly Patterns"
-        android:id="@+id/buttonFlyPatterns"
-        android:layout_alignTop="@+id/imageView6"
-        android:layout_alignParentRight="true" />
-
 </RelativeLayout>

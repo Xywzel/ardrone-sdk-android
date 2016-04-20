@@ -72,7 +72,7 @@ public class HudViewController
 	private static final int USB_INDICATOR_TEXT_ID = 17;
 	private static final int BACK_BTN_ID = 18;
 	private static final int LAND_ID = 19;
-	private static final int FOLLOW_ID = 20; // Modified!
+	private static final int FLIGHT_PATHS_ID = 20; // Modified!
 
 
 	private Image bottomBarBg;
@@ -85,7 +85,7 @@ public class HudViewController
 	private Button btnPhoto;
 	private Button btnBack;
 	private ToggleButton btnRecord;
-	private Button btnFollow; // Modified
+	private Button btnFlightPaths; // Modified
 
 
 	private Button[] buttons;
@@ -162,8 +162,8 @@ public class HudViewController
 		btnTakeOff = new Button(res, R.drawable.btn_take_off_normal, R.drawable.btn_take_off_pressed, Align.BOTTOM_CENTER);		
 		btnLand = new Button(res, R.drawable.btn_landing, R.drawable.btn_landing_pressed, Align.BOTTOM_CENTER);      
 		btnLand.setVisible(false);
-		btnFollow = new Button(res, R.drawable.btn_take_off_normal, R.drawable.btn_take_off_pressed, Align.BOTTOM_RIGHT); // Modified!
-		btnFollow.setVisible(true);		// Modified!
+		btnFlightPaths = new Button(res, R.drawable.btn_photo, R.drawable.btn_photo_pressed, Align.BOTTOM_RIGHT); // Modified!
+		btnFlightPaths.setVisible(true); // Modified!
 		
 		Image topBarBg = new Image(res, R.drawable.barre_haut, Align.TOP_CENTER);
 		topBarBg.setSizeParams(SizeParams.FILL_SCREEN, SizeParams.NONE);
@@ -235,7 +235,7 @@ public class HudViewController
 		buttons[5] = btnRecord;
 		buttons[6] = btnCameraSwitch;
 		buttons[7] = btnBack;
-		buttons[8] = btnFollow; // Modified
+		buttons[8] = btnFlightPaths; // Modified
 		
 		
 		txtAlert = new Text(context, "", Align.TOP_CENTER);
@@ -262,7 +262,7 @@ public class HudViewController
 		renderer.addSprite(RECORD_LABEL_ID, txtRecord);
 		renderer.addSprite(USB_INDICATOR_ID, usbIndicator);
 		renderer.addSprite(USB_INDICATOR_TEXT_ID, txtUsbRemaining);
-		renderer.addSprite(FOLLOW_ID, btnFollow); // Modified!
+		renderer.addSprite(FLIGHT_PATHS_ID, btnFlightPaths); // Modified!
 	}
 	
 	
