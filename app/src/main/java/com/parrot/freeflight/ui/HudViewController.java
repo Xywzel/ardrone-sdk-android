@@ -73,6 +73,7 @@ public class HudViewController
 	private static final int BACK_BTN_ID = 18;
 	private static final int LAND_ID = 19;
 	private static final int FLIGHT_PATHS_ID = 20; // Modified!
+	private static final int ENABLE_FLY_PATH_ID = 21; // Modified
 
 
 	private Image bottomBarBg;
@@ -86,6 +87,7 @@ public class HudViewController
 	private Button btnBack;
 	private ToggleButton btnRecord;
 	private Button btnFlightPaths; // Modified
+	private Button btnEnableFlyPath; // Modified
 
 
 	private Button[] buttons;
@@ -164,6 +166,8 @@ public class HudViewController
 		btnLand.setVisible(false);
 		btnFlightPaths = new Button(res, R.drawable.btn_photo, R.drawable.btn_photo_pressed, Align.BOTTOM_RIGHT); // Modified!
 		btnFlightPaths.setVisible(true); // Modified!
+		btnEnableFlyPath = new Button(res, R.drawable.btn_photo, R.drawable.btn_photo_pressed, Align.BOTTOM_LEFT); // Modified!
+		btnEnableFlyPath.setVisible(true); // Modified!
 		
 		Image topBarBg = new Image(res, R.drawable.barre_haut, Align.TOP_CENTER);
 		topBarBg.setSizeParams(SizeParams.FILL_SCREEN, SizeParams.NONE);
@@ -226,7 +230,7 @@ public class HudViewController
 		wifiIndicator = new Indicator(res, wifiIndicatorRes, Align.TOP_LEFT);
 		wifiIndicator.setMargin(0, 0, 0, (int)res.getDimension(R.dimen.hud_wifi_indicator_margin_left));
 
-		buttons = new Button[9]; // Modified
+		buttons = new Button[10]; // Modified
 		buttons[0] = btnSettings;
 		buttons[1] = btnEmergency;
 		buttons[2] = btnTakeOff;
@@ -236,6 +240,7 @@ public class HudViewController
 		buttons[6] = btnCameraSwitch;
 		buttons[7] = btnBack;
 		buttons[8] = btnFlightPaths; // Modified
+		buttons[9] = btnEnableFlyPath; // Modified
 		
 		
 		txtAlert = new Text(context, "", Align.TOP_CENTER);
@@ -263,6 +268,7 @@ public class HudViewController
 		renderer.addSprite(USB_INDICATOR_ID, usbIndicator);
 		renderer.addSprite(USB_INDICATOR_TEXT_ID, txtUsbRemaining);
 		renderer.addSprite(FLIGHT_PATHS_ID, btnFlightPaths); // Modified!
+		renderer.addSprite(ENABLE_FLY_PATH_ID, btnEnableFlyPath); // Modified
 	}
 	
 	
@@ -605,6 +611,11 @@ public class HudViewController
 	public void setBtnFlightPathsClickListener(OnClickListener listener)
 	{
 		this.btnFlightPaths.setOnClickListener(listener);
+	}
+
+	public void setBtnEnableFlyPathClickListener(OnClickListener listener)
+	{
+		this.btnEnableFlyPath.setOnClickListener(listener);
 	}
 	
 	public void onPause()

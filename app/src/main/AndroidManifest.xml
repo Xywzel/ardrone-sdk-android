@@ -107,10 +107,10 @@
             android:name=".activities.BrowserActivity"
             android:finishOnTaskLaunch="true"
             android:screenOrientation="landscape"
-            android:theme="@style/FreeFlightTheme.BrowserScreen"></activity>
+            android:theme="@style/FreeFlightTheme.BrowserScreen" />
 
-        <service android:name=".transcodeservice.TranscodingService"></service>
-        <service android:name=".updater.FirmwareUpdateService"></service>
+        <service android:name=".transcodeservice.TranscodingService" />
+        <service android:name=".updater.FirmwareUpdateService" />
 
         <uses-library
             android:name="com.sony.btv.remotesensor"
@@ -121,7 +121,12 @@
 
         <activity
             android:name=".activities.FlightPathSelectActivity"
-            android:label="@string/title_activity_flight_path_select"></activity>
+            android:label="@string/title_activity_flight_path_select" />
+
+        <service
+            android:name=".activities.FlyPathService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>

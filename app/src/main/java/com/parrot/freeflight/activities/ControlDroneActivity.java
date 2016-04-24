@@ -10,6 +10,7 @@ package com.parrot.freeflight.activities;
 import java.io.File;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import android.annotation.SuppressLint;
 import android.content.ComponentName;
@@ -99,7 +100,9 @@ public class ControlDroneActivity
     private static final int ROLL = 2;
 
 
+
     private DroneControlService droneControlService;
+    private FlyPathService flyPathService;
     private ApplicationSettings settings;
     private SettingsDialog settingsDialog;
 
@@ -147,6 +150,8 @@ public class ControlDroneActivity
     private boolean leftJoyPressed;
     private boolean isGoogleTV;
 
+    private boolean flyPathEnabled;
+
     private List<ButtonController> buttonControllers;
 
     private ServiceConnection mConnection = new ServiceConnection()
@@ -161,6 +166,22 @@ public class ControlDroneActivity
         public void onServiceDisconnected(ComponentName name)
         {
             droneControlService = null;
+        }
+    };
+
+    private ServiceConnection flyPathConnection = new ServiceConnection()
+    {
+
+        public void onServiceConnected(ComponentName name, IBinder service)
+        {
+            flyPathService = ((FlyPathService.LocalBinder) service).getService();
+            flyPathService.setDroneControlService(droneControlService);
+            flyPathService.run();
+        }
+
+        public void onServiceDisconnected(ComponentName name)
+        {
+            flyPathService = null;
         }
     };
 
@@ -190,6 +211,7 @@ public class ControlDroneActivity
         deviceOrientationManager.onCreate();
 
         bindService(new Intent(this, DroneControlService.class), mConnection, Context.BIND_AUTO_CREATE);
+        bindService(new Intent(this, FlyPathService.class), flyPathConnection, Context.BIND_AUTO_CREATE);
 
         Bundle bundle = getIntent().getExtras();
 
@@ -230,6 +252,8 @@ public class ControlDroneActivity
         
         view.setCameraButtonEnabled(false);
         view.setRecordButtonEnabled(false);
+
+        flyPathEnabled = false;
     }
     
     private void applyHandDependendTVControllers()
@@ -657,6 +681,25 @@ public class ControlDroneActivity
                 }
             }
         });
+
+        view.setBtnEnableFlyPathClickListener(new OnClickListener()
+        {
+            public void onClick(View v)
+            {
+                if (flyPathService != null) {
+                    if (!flyPathEnabled) {
+                        flyPathEnabled = true;
+                        flyPathService.startFlight();
+                        flyPathService.run();
+                        Log.d("FlyPath", "flight started");
+                    } else {
+                        flyPathEnabled = false;
+                        flyPathService.stopFlight();
+                        Log.d("FlyPath", "flight stopped");
+                    }
+                }
+            }
+        });
     }
 
     
@@ -719,6 +762,7 @@ public class ControlDroneActivity
         soundPool = null;
 
         unbindService(mConnection);
+        unbindService(flyPathConnection);
 
         super.onDestroy();
         Log.d(TAG, "ControlDroneActivity destroyed");
