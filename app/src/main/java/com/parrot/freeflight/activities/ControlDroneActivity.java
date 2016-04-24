@@ -82,6 +82,7 @@ import com.parrot.freeflight.ui.hud.JoystickListener;
 import com.parrot.freeflight.utils.NookUtils;
 import com.parrot.freeflight.utils.SystemUtils;
 
+import fileops.ControlRunner;
 import fileops.FlightPath;
 
 @SuppressLint("NewApi")
@@ -99,7 +100,7 @@ public class ControlDroneActivity
     private static final int PITCH = 1;
     private static final int ROLL = 2;
 
-
+    private ControlRunner controlRunner;
 
     private DroneControlService droneControlService;
     private FlyPathService flyPathService;
@@ -161,6 +162,7 @@ public class ControlDroneActivity
         {
             droneControlService = ((DroneControlService.LocalBinder) service).getService();
             onDroneServiceConnected();
+            controlRunner = new ControlRunner(droneControlService, "todo");
         }
 
         public void onServiceDisconnected(ComponentName name)
@@ -176,7 +178,6 @@ public class ControlDroneActivity
         {
             flyPathService = ((FlyPathService.LocalBinder) service).getService();
             flyPathService.setDroneControlService(droneControlService);
-            flyPathService.run();
         }
 
         public void onServiceDisconnected(ComponentName name)
@@ -254,6 +255,7 @@ public class ControlDroneActivity
         view.setRecordButtonEnabled(false);
 
         flyPathEnabled = false;
+
     }
     
     private void applyHandDependendTVControllers()
@@ -686,19 +688,27 @@ public class ControlDroneActivity
         {
             public void onClick(View v)
             {
-                if (flyPathService != null) {
                     if (!flyPathEnabled) {
                         flyPathEnabled = true;
-                        flyPathService.startFlight();
-                        flyPathService.run();
+                        //flyPathService.startFlight();
+                        //flyPathService.run();
+
+                        //controlRunner.start();
+
+
+
                         Log.d("FlyPath", "flight started");
                     } else {
                         flyPathEnabled = false;
-                        flyPathService.stopFlight();
+                        //flyPathService.stopFlight();
+
+                        //controlRunner.end();
+
                         Log.d("FlyPath", "flight stopped");
                     }
-                }
+                droneControlService.moveDown((float)0.5);
             }
+
         });
     }
 
