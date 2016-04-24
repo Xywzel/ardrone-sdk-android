@@ -46,7 +46,7 @@ public class FlightController {
         }
         if (distanceToCurrentTarget() < epsilon) this.targetPlace = path.nextCoordinate();
         Pair<Double, Double> newSpeed = getTargetSpeed();
-        if (newSpeed.first > 0.0) dcs.moveRight(newSpeed.first.floatValue());
+        if (newSpeed.first > 0.0) dcs.moveForward(newSpeed.first.floatValue());
         if (newSpeed.first < 0.0) dcs.moveLeft(-newSpeed.first.floatValue());
         if (newSpeed.second > 0.0) dcs.moveBackward(newSpeed.second.floatValue());
         if (newSpeed.second < 0.0) dcs.moveForward(-newSpeed.second.floatValue());
