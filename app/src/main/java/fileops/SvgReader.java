@@ -25,8 +25,8 @@ public class SvgReader {
     public SvgReader (String filename) {
         String pathLine = null;
         try {
-            //File sdcard = Environment.getExternalStorageDirectory();
-            File file = new File(filename);
+            File sdcard = Environment.getExternalStorageDirectory();
+            File file = new File(sdcard, filename);
             FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
             for (String line; (line = br.readLine()) != null; ){
