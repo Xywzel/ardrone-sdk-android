@@ -33,8 +33,8 @@ public class ControlRunner extends Thread {
 
         path.add(p1);
         path.add(p2);
-        path.add(p3);
-        path.add(p4);
+        //path.add(p3);
+        //path.add(p4);
 
         flightPath = new FlightPath(path);
         flightController = new FlightController(flightPath, dcs);

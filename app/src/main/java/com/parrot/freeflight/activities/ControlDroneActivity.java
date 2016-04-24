@@ -693,7 +693,7 @@ public class ControlDroneActivity
                         //flyPathService.startFlight();
                         //flyPathService.run();
 
-                        //controlRunner.start();
+                        controlRunner.start();
 
 
 
@@ -702,11 +702,11 @@ public class ControlDroneActivity
                         flyPathEnabled = false;
                         //flyPathService.stopFlight();
 
-                        //controlRunner.end();
+                        controlRunner.end();
 
                         Log.d("FlyPath", "flight stopped");
                     }
-                droneControlService.moveDown((float)0.5);
+                //droneControlService.moveDown((float)0.5);
             }
 
         });
