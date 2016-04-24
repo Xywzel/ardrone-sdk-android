@@ -76,6 +76,6 @@ public class FlightController {
         double dx = targetPlace.first - currentPlace.first;
         double dy = targetPlace.second - currentPlace.second;
         double scale = Math.max(Math.abs(dx), Math.abs(dy));
-        return new Pair<Double, Double>(dx / scale, dy / scale);
+        return new Pair<Double, Double>(0.5 * dx / scale, 0.5 * dy / scale);
     }
 }
