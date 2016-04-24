@@ -1,5 +1,6 @@
 package fileops;
 
+import android.os.Environment;
 import android.util.Pair;
 
 import java.io.BufferedReader;
@@ -15,10 +16,11 @@ import java.util.Vector;
  * Use coordinates vector as input for Flight Path constructor
  */
 public class SvgReader {
-    public Vector<Pair<Float, Float>> coordinates;
+    public Vector<Pair<Double, Double>> coordinates;
     public SvgReader (String filename) {
         String pathLine = null;
         try {
+            //File sdcard = Environment.getExternalStorageDirectory();
             File file = new File(filename);
             FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
@@ -30,6 +32,8 @@ public class SvgReader {
                     pathLine = line.trim();
                 }
             }
+            br.close();
+            fr.close();
         } catch (FileNotFoundException e) {
             System.out.println("This here is a missing file problem, sir.");
             e.printStackTrace();
@@ -40,13 +44,13 @@ public class SvgReader {
         if (pathLine == null) {
             System.out.println("There was no path there");
         } else {
-            String simplePath = pathLine.replace("d=\"M", "").replace("z", "").trim();
-            String[] places = simplePath.split("L");
-            coordinates = new Vector();
+            String simplePath = pathLine.replace("d=\"M", "").replace("z", "").replace("L", "").trim();
+            String[] places = simplePath.split(" ");
+            coordinates = new Vector<Pair<Double, Double>>();
             for(String place : places){
-                Float a = Float.parseFloat(place.trim().split(" ")[0]);
-                Float b = Float.parseFloat(place.trim().split(" ")[1]);
-                coordinates.add(new Pair<Float, Float>(a,b));
+                Double a = Double.parseDouble(place.trim().split(",")[0]);
+                Double b = Double.parseDouble(place.trim().split(",")[1]);
+                coordinates.add(new Pair<Double, Double>(a,b));
             }
         }
     }

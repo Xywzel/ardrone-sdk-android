@@ -11,28 +11,29 @@ import java.util.Vector;
  * and has iterator that can be used to get next pair of coordinates
  */
 public class FlightPath {
-    public Vector<Pair<Float, Float>> normalizedCoordinates;
+    public Vector<Pair<Double, Double>> normalizedCoordinates;
     private int currentIndex;
-    public FlightPath(Vector<Pair<Float, Float>> coordinates){
+    public FlightPath(Vector<Pair<Double, Double>> coordinates){
         currentIndex = 0;
-        float maxDist = 0.0f;
-        Vector<Pair<Float, Float>> centralCoordinates = new Vector();
-        for(Pair<Float, Float> coord : coordinates) {
-            Float x = coord.first - coordinates.elementAt(0).first;
-            Float y = coord.second - coordinates.elementAt(0).second;
+        double maxDist = 0.0f;
+        Vector<Pair<Double, Double>> centralCoordinates = new Vector<Pair<Double, Double>>();
+        for(Pair<Double, Double> coord : coordinates) {
+            Double x = coord.first - coordinates.elementAt(0).first;
+            Double y = coord.second - coordinates.elementAt(0).second;
             if(x * x + y * y > maxDist){
                 maxDist = x * x + y * y;
             }
-            centralCoordinates.add(new Pair<Float, Float>(x,y));
+            centralCoordinates.add(new Pair<Double, Double>(x,y));
         }
-        normalizedCoordinates = new Vector();
-        Float factor = 100.0f / maxDist;
-        for (Pair<Float, Float> coord : centralCoordinates){
-            normalizedCoordinates.add(new Pair<Float, Float>(coord.first * factor, coord.second * factor));
+        normalizedCoordinates = new Vector<Pair<Double, Double>>();
+        Double factor = 100.0 / maxDist;
+        for (Pair<Double, Double> coord : centralCoordinates){
+            normalizedCoordinates.add(new Pair<Double, Double>(coord.first * factor, coord.second * factor));
         }
     }
-    public Pair<Float, Float> nextCoordinate(){
-        currentIndex++;
-        return normalizedCoordinates.elementAt(currentIndex - 1);
+    public Pair<Double, Double> nextCoordinate(){
+        Pair<Double, Double> next = normalizedCoordinates.elementAt(currentIndex);
+        currentIndex = (currentIndex + 1) % normalizedCoordinates.size();
+        return next;
     }
 }
