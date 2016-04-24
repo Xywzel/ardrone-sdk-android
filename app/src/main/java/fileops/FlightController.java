@@ -34,7 +34,7 @@ public class FlightController {
     }
 
     public void update() {
-        if (time == 0.0f) {
+        if (time == 0.0) {
             time = (double) System.currentTimeMillis() / 1000.0;
         } else {
             double currentTime = (double) System.currentTimeMillis() / 1000.0;
@@ -51,6 +51,19 @@ public class FlightController {
         if (newSpeed.second > 0.0) dcs.moveBackward(newSpeed.second.floatValue());
         if (newSpeed.second < 0.0) dcs.moveForward(-newSpeed.second.floatValue());
         currentSpeed = newSpeed;
+    }
+
+    public void stop(){
+        double currentTime = (double) System.currentTimeMillis() / 1000.0;
+        double deltaTime = currentTime - time;
+        time = currentTime;
+        currentPlace = new Pair<Double, Double>(
+                currentPlace.first + 0.1 * deltaTime * currentSpeed.first,
+                currentPlace.second + 0.1 * deltaTime * currentSpeed.second);
+        time = 0.0;
+        currentSpeed = new Pair<Double, Double>(0.0, 0.0);
+        dcs.moveRight(0.0f);
+        dcs.moveForward(0.0f);
     }
 
     private double distanceToCurrentTarget(){
