@@ -14,6 +14,11 @@ import java.util.Vector;
  * Created by Xywzel on 20/04/16.
  * Used to parse flight coordinates from svg file
  * Use coordinates vector as input for Flight Path constructor
+ * Currently only supports single path element with flight path given d parameter
+ * Use absolute positions eq. Big Letters between coordinates, values of coordinate
+ * pair should be separated by comma, and coordinates by space and/or letter.
+ * L is best for visualization of the path.
+ * "d=..." should be on its own line.
  */
 public class SvgReader {
     public Vector<Pair<Double, Double>> coordinates;
@@ -44,7 +49,7 @@ public class SvgReader {
         if (pathLine == null) {
             System.out.println("There was no path there");
         } else {
-            String simplePath = pathLine.replace("d=\"M", "").replace("z", "").replace("L", "").trim();
+            String simplePath = pathLine.replaceAll("(d=)|[MLZmlz]|\"", "").trim();
             String[] places = simplePath.split(" ");
             coordinates = new Vector<Pair<Double, Double>>();
             for(String place : places){

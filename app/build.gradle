@@ -3,13 +3,13 @@ import org.apache.tools.ant.taskdefs.condition.Os
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 16
+    compileSdkVersion 21
     buildToolsVersion "23.0.1"
 
     defaultConfig {
         applicationId "com.parrot.freeflight"
-        minSdkVersion 8
-        targetSdkVersion 16
+        minSdkVersion 21
+        targetSdkVersion 21
         versionCode 20000
         versionName "2.0-SDK"
 
