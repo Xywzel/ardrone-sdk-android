@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -91,9 +92,11 @@ public class ControlDroneActivity
         implements DeviceOrientationChangeDelegate, WifiSignalStrengthReceiverDelegate, DroneVideoRecordStateReceiverDelegate, DroneEmergencyChangeReceiverDelegate,
         DroneBatteryChangedReceiverDelegate, DroneFlyingStateReceiverDelegate, DroneCameraReadyActionReceiverDelegate, DroneRecordReadyActionReceiverDelegate, SettingsDialogDelegate
 {
+    public String pathFileName = "";
+
     private static final int LOW_DISK_SPACE_BYTES_LEFT = 1048576 * 20; //20 mebabytes
     private static final int WARNING_MESSAGE_DISMISS_TIME = 5000; // 5 seconds
-    
+
     private static final String TAG = "ControlDroneActivity";
     private static final float ACCELERO_TRESHOLD = (float) Math.PI / 180.0f * 2.0f;
 
@@ -164,7 +167,6 @@ public class ControlDroneActivity
         {
             droneControlService = ((DroneControlService.LocalBinder) service).getService();
             onDroneServiceConnected();
-            controlRunner = new ControlRunner(droneControlService);
         }
 
         public void onServiceDisconnected(ComponentName name)
@@ -197,7 +199,7 @@ public class ControlDroneActivity
         if (isFinishing()) {
             return;
         }
-        
+
         settings = getSettings();
 
         this.isGoogleTV = SystemUtils.isGoogleTV(this);
@@ -210,7 +212,7 @@ public class ControlDroneActivity
             screenRotationIndex = getWindow().getWindowManager().getDefaultDisplay().getRotation();
             deviceOrientationManager = new DeviceOrientationManager(new DeviceSensorManagerWrapper(this), this);
         }
-        
+
         deviceOrientationManager.onCreate();
 
         bindService(new Intent(this, DroneControlService.class), mConnection, Context.BIND_AUTO_CREATE);
@@ -232,7 +234,7 @@ public class ControlDroneActivity
         acceleroEnabled = false;
         running = false;
 
-        initRegularJoystics();       
+        initRegularJoystics();
 
         view = new HudViewController(this, useSoftwareRendering);
 
@@ -250,23 +252,23 @@ public class ControlDroneActivity
         if (!deviceOrientationManager.isAcceleroAvailable()) {
             settings.setControlMode(ControlMode.NORMAL_MODE);
         }
-        
+
         settings.setFirstLaunch(false);
-        
+
         view.setCameraButtonEnabled(false);
         view.setRecordButtonEnabled(false);
 
         flyPathEnabled = false;
         rightButtonEnabled = false;
     }
-    
+
     private void applyHandDependendTVControllers()
     {
         if (settings.isLeftHanded()) {
-            screenRotationIndex = Surface.ROTATION_90;          
+            screenRotationIndex = Surface.ROTATION_90;
             initGoogleTVControllers(ControlButtonsFactory.getLeftHandedControls());
         } else {
-            screenRotationIndex = Surface.ROTATION_270;  
+            screenRotationIndex = Surface.ROTATION_270;
             initGoogleTVControllers(ControlButtonsFactory.getRightHandedControls());
         }
     }
@@ -690,6 +692,8 @@ public class ControlDroneActivity
         {
             public void onClick(View v)
             {
+                if (controlRunner == null) controlRunner = new ControlRunner(droneControlService, pathFileName);
+
                 if (!flyPathEnabled) {
                     flyPathEnabled = true;
                     droneControlService.setProgressiveCommandEnabled(true);
@@ -709,7 +713,7 @@ public class ControlDroneActivity
         });
     }
 
-    
+
     private void initVirtualJoysticks(JoystickType leftType, JoystickType rightType, boolean isLeftHanded)
     {
         JoystickBase joystickLeft = (!isLeftHanded ? view.getJoystickLeft() : view.getJoystickRight());
@@ -867,7 +871,7 @@ public class ControlDroneActivity
 
         initListeners();
         runTranscoding();
-        
+
         if (droneControlService.getMediaDir() != null) {
             view.setRecordButtonEnabled(true);
             view.setCameraButtonEnabled(true);
@@ -917,10 +921,10 @@ public class ControlDroneActivity
     {
         view.setCameraButtonEnabled(ready);
         cameraReady = ready;
-        
+
         updateBackButtonState();
     }
-    
+
 
     public void onDroneEmergencyChanged(int code)
     {
@@ -932,8 +936,8 @@ public class ControlDroneActivity
             stopEmergencySound();
         }
 
-        controlLinkAvailable = (code != NavData.ERROR_STATE_NAVDATA_CONNECTION); 
-        
+        controlLinkAvailable = (code != NavData.ERROR_STATE_NAVDATA_CONNECTION);
+
         if (!controlLinkAvailable) {
             view.setRecordButtonEnabled(false);
             view.setCameraButtonEnabled(false);
@@ -943,12 +947,12 @@ public class ControlDroneActivity
             view.setRecordButtonEnabled(true);
             view.setCameraButtonEnabled(true);
         }
-        
+
         updateBackButtonState();
-        
+
         view.setEmergencyButtonEnabled(!NavData.isEmergency(code));
     }
-    
+
     public void onDroneBatteryChanged(int value)
     {
         view.setBatteryValue(value);
@@ -964,7 +968,7 @@ public class ControlDroneActivity
     {
         if (droneControlService == null)
             return;
-        
+
         prevRecording = this.recording;
         this.recording = recording;
 
@@ -981,7 +985,7 @@ public class ControlDroneActivity
                 showWarningDialog(getString(R.string.Your_video_is_being_processed_Please_do_not_close_application), WARNING_MESSAGE_DISMISS_TIME);
             }
         }
-        
+
         if (prevRecording != recording) {
             if (usbActive && droneControlService.getDroneConfig().isRecordOnUsb() && remaining == 0) {
                 onNotifyLowUsbSpace();
@@ -992,7 +996,7 @@ public class ControlDroneActivity
     protected void showSettingsDialog()
     {
         view.setSettingsButtonEnabled(false);
-        
+
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment prev = getSupportFragmentManager().findFragmentByTag("settings");
 
@@ -1003,7 +1007,7 @@ public class ControlDroneActivity
         ft.addToBackStack(null);
 
         settingsDialog.show(ft, "settings");
-        
+
         if (pauseVideoWhenOnSettings) {
             view.onPause();
         }
@@ -1016,14 +1020,14 @@ public class ControlDroneActivity
             super.onBackPressed();
         }
     }
-    
-    
+
+
     private boolean canGoBack()
     {
         return !((flying || recording || !cameraReady) && controlLinkAvailable);
     }
-    
-    
+
+
     private void applyJoypadConfig(ControlMode controlMode, boolean isLeftHanded)
     {
         switch (controlMode) {
@@ -1041,8 +1045,8 @@ public class ControlDroneActivity
             break;
         }
     }
-    
-    
+
+
     private void applySettings(ApplicationSettings settings)
     {
         applySettings(settings, false);
@@ -1089,7 +1093,7 @@ public class ControlDroneActivity
         final String tag = message;
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         Fragment prev = getSupportFragmentManager().findFragmentByTag(tag);
-        
+
         if (prev != null) {
             return;
         }
@@ -1114,29 +1118,29 @@ public class ControlDroneActivity
         effectsStreamId = soundPool.play(batterySoundId, 1, 1, 1, -1, 1);
     }
 
-    
+
     private void stopEmergencySound()
     {
         soundPool.stop(effectsStreamId);
         effectsStreamId = 0;
     }
 
-    
+
     private void updateBackButtonState()
     {
         if (canGoBack()) {
             view.setBackButtonVisible(true);
         } else {
-            view.setBackButtonVisible(false);   
+            view.setBackButtonVisible(false);
         }
     }
-    
-    
+
+
     private void runTranscoding()
     {
         if (droneControlService.getDroneVersion() == EDroneVersion.DRONE_1) {
         	File mediaDir = droneControlService.getMediaDir();
-        	
+
         	if (mediaDir != null) {
 	            Intent transcodeIntent = new Intent(this, TranscodingService.class);
 	            transcodeIntent.putExtra(TranscodingService.EXTRA_MEDIA_PATH, mediaDir.toString());
@@ -1218,16 +1222,16 @@ public class ControlDroneActivity
         dialog.enableAvailableSettings();
     }
 
-    
+
     @Override
-    public void onOptionChangedApp(SettingsDialog dialog, EAppSettingProperty property, Object value) 
+    public void onOptionChangedApp(SettingsDialog dialog, EAppSettingProperty property, Object value)
     {
         if (value == null || value == null) {
             throw new IllegalArgumentException("Property can not be null");
         }
-        
+
         ApplicationSettings appSettings = getSettings();
-        
+
         switch (property) {
         case LEFT_HANDED_PROP:
         case MAGNETO_ENABLED_PROP:
@@ -1243,18 +1247,18 @@ public class ControlDroneActivity
             break;
         default:
             // Ignoring any other option change. They should be processed in onDismissed
-            
+
         }
     }
-    
-    
+
+
     @Override
     public void onDismissed(SettingsDialog settingsDialog)
     {
         if (this.isGoogleTV) {
             this.applyHandDependendTVControllers();
         }
-         	 
+
     	// pauseVideoWhenOnSettings option is not mandatory and is set depending to device in config.xml.
         if (pauseVideoWhenOnSettings) {
             view.onResume();
@@ -1281,7 +1285,7 @@ public class ControlDroneActivity
 
         loadPropTask.execute();
     }
-    
+
 
     private boolean isLowOnDiskSpace()
     {
@@ -1292,11 +1296,11 @@ public class ControlDroneActivity
             if (!recording && !config.isRecordOnUsb()) {
                 File mediaDir = droneControlService.getMediaDir();
                 long freeSpace = 0;
-                
+
                 if (mediaDir != null) {
                     freeSpace = mediaDir.getUsableSpace();
                 }
-                
+
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.GINGERBREAD
                         && freeSpace < LOW_DISK_SPACE_BYTES_LEFT) {
                     lowOnSpace = true;
@@ -1305,7 +1309,7 @@ public class ControlDroneActivity
         } else {
             // TODO: Provide alternative implementation. Probably using StatFs
         }
-        
+
         return lowOnSpace;
     }
 
@@ -1313,7 +1317,7 @@ public class ControlDroneActivity
     {
         if (droneControlService != null) {
             DroneConfig droneConfig = droneControlService.getDroneConfig();
-            
+
             boolean sdCardMounted = droneControlService.isMediaStorageAvailable();
             boolean recordingToUsb = droneConfig.isRecordOnUsb() && droneControlService.isUSBInserted();
 
@@ -1321,7 +1325,7 @@ public class ControlDroneActivity
                 // Allow to stop recording
                 view.setRecordButtonEnabled(false);
                 droneControlService.record();
-            } else {           
+            } else {
                 // Start recording
                 if (!sdCardMounted) {
                     if (recordingToUsb) {
@@ -1334,10 +1338,10 @@ public class ControlDroneActivity
                     if (!recordingToUsb && isLowOnDiskSpace()) {
                         onNotifyLowDiskSpace();
                     }
-                    
+
                     view.setRecordButtonEnabled(false);
                     droneControlService.record();
-                }      
+                }
             }
         }
     }
@@ -1349,6 +1353,19 @@ public class ControlDroneActivity
             droneControlService.takePhoto();
         } else {
            onNotifyNoMediaStorageAvailable();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case (40) : {
+                if (resultCode == Activity.RESULT_OK) {
+                    pathFileName = data.getStringExtra("filename");
+                }
+                break;
+            }
         }
     }
 }

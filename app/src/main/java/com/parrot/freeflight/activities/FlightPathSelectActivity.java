@@ -1,5 +1,6 @@
 package com.parrot.freeflight.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Environment;
@@ -45,7 +46,7 @@ public class FlightPathSelectActivity extends Activity {
         {
             Log.d("Files", "Path not found");
         }
-
+        this.
         // Update UI element
         adapter = new ArrayAdapter<String>(getApplicationContext(),
                 android.R.layout.simple_list_item_1, arrayList);
@@ -58,7 +59,11 @@ public class FlightPathSelectActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
                 String fileName = list.getItemAtPosition(position).toString();
+                Intent resultIntent = new Intent();
+                resultIntent.putExtra("filename", fileName);
+                setResult(Activity.RESULT_OK, resultIntent);
                 Log.d("Files", "clicked: " + fileName);
+                finish();
             }
         });
 
