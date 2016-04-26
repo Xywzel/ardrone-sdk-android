@@ -49,20 +49,17 @@ public class FlightController {
         if (distanceToCurrentTarget() < epsilon)
         {
             this.targetPlace = path.nextCoordinate();
-            dcs.setYaw(1);
+//            dcs.setYaw(1);
             yawTime = (double) System.currentTimeMillis() / 1000;
 
         }
         Pair<Double, Double> newSpeed = getTargetSpeed();
         dcs.setProgressiveCommandEnabled(true);
         dcs.setProgressiveCommandCombinedYawEnabled(true);
-        if ((double) System.currentTimeMillis() / 1000 > yawTime + 0.5) {
-            dcs.setYaw(0);
-            if (newSpeed.first > 0.0) dcs.moveRight(newSpeed.first.floatValue());
-            if (newSpeed.first < 0.0) dcs.moveLeft(newSpeed.first.floatValue());
-            if (newSpeed.second > 0.0) dcs.moveBackward(newSpeed.second.floatValue());
-            if (newSpeed.second < 0.0) dcs.moveForward(newSpeed.second.floatValue());
-        }
+//        if ((double) System.currentTimeMillis() / 1000 > yawTime + 0.5) {
+//        dcs.setYaw(0);
+        dcs.moveRight(newSpeed.first.floatValue());dcs.moveBackward(newSpeed.second.floatValue());
+//        }
         currentSpeed = newSpeed;
     }
 
