@@ -26,10 +26,10 @@ public class ControlRunner extends Thread {
 
         Vector<Pair<Double, Double>> path = new Vector<Pair<Double, Double>>();
 
-        Pair<Double, Double> p1 = new Pair<Double, Double>(1.0,2.0);
-        Pair<Double, Double> p2 = new Pair<Double, Double>(2.0,2.0);
-        Pair<Double, Double> p3 = new Pair<Double, Double>(3.0,2.0);
-        Pair<Double, Double> p4 = new Pair<Double, Double>(3.0,3.0);
+        Pair<Double, Double> p1 = new Pair<Double, Double>(1.0,1.0);
+        Pair<Double, Double> p2 = new Pair<Double, Double>(1.0,2.0);
+        Pair<Double, Double> p3 = new Pair<Double, Double>(2.0,2.0);
+        Pair<Double, Double> p4 = new Pair<Double, Double>(2.0,1.0);
 
         path.add(p1);
         path.add(p2);

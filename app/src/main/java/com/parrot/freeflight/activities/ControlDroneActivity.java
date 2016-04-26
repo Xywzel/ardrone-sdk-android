@@ -677,9 +677,27 @@ public class ControlDroneActivity
         {
             public void onClick(View v)
             {
+                /*
                 if (droneControlService != null) {
                     Intent flightPathSelectActivity = new Intent(ControlDroneActivity.this, FlightPathSelectActivity.class);
                     startActivityForResult(flightPathSelectActivity,40); // 40 on randomilla valittu
+                }
+                */
+                if (!flyPathEnabled) {
+                    flyPathEnabled = true;
+                    droneControlService.setProgressiveCommandEnabled(true);
+                    droneControlService.setProgressiveCommandCombinedYawEnabled(true);
+                    droneControlService.setYaw(1);
+
+                    Log.d("FlyPath", "oikea nappi päälle");
+                } else {
+                    flyPathEnabled = false;
+                    droneControlService.setProgressiveCommandEnabled(false);
+                    droneControlService.setProgressiveCommandCombinedYawEnabled(false);
+                    droneControlService.setYaw(0);
+
+
+                    Log.d("FlyPath", "oikea nappi pois");
                 }
             }
         });
@@ -688,27 +706,22 @@ public class ControlDroneActivity
         {
             public void onClick(View v)
             {
-                    if (!flyPathEnabled) {
-                        flyPathEnabled = true;
-                        //flyPathService.startFlight();
-                        //flyPathService.run();
+                if (!flyPathEnabled) {
+                    flyPathEnabled = true;
+                    droneControlService.setProgressiveCommandEnabled(true);
+                    droneControlService.setProgressiveCommandCombinedYawEnabled(true);
+                    controlRunner.start();
 
-                        controlRunner.start();
+                    Log.d("FlyPath", "flight started");
+                } else {
+                    flyPathEnabled = false;
+                    droneControlService.setProgressiveCommandEnabled(false);
+                    droneControlService.setProgressiveCommandCombinedYawEnabled(false);
+                    controlRunner.end();
 
-
-
-                        Log.d("FlyPath", "flight started");
-                    } else {
-                        flyPathEnabled = false;
-                        //flyPathService.stopFlight();
-
-                        controlRunner.end();
-
-                        Log.d("FlyPath", "flight stopped");
-                    }
-                //droneControlService.moveDown((float)0.5);
+                    Log.d("FlyPath", "flight stopped");
+                }
             }
-
         });
     }
 

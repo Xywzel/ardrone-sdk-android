@@ -341,6 +341,7 @@ LocationListener
 	public void moveForward(final float power)
 	{
 		droneProxy.setControlValue(CONTROL_SET_PITCH, -power);
+		Log.d("liiku eteen", "lolololo");
 	}
 
 	/**

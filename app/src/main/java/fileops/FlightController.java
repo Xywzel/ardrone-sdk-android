@@ -15,6 +15,7 @@ public class FlightController {
     private DroneControlService dcs;
     private Pair<Double, Double> currentSpeed;
     public double time;
+    public double yawTime;
 
     private static double epsilon = 1.0;
 
@@ -25,6 +26,7 @@ public class FlightController {
         this.targetPlace = path.nextCoordinate();
         this.time = 0.0f;
         this.dcs = dcs;
+        this.yawTime = 0.0f;
     }
 
     public static FlightController fromFile(String filename, DroneControlService dcs){
@@ -41,15 +43,26 @@ public class FlightController {
             double deltaTime = currentTime - time;
             time = currentTime;
             currentPlace = new Pair<Double, Double>(
-                    currentPlace.first + 0.1 * deltaTime * currentSpeed.first,
-                    currentPlace.second + 0.1 * deltaTime * currentSpeed.second);
+                    currentPlace.first + 10 * deltaTime * currentSpeed.first,
+                    currentPlace.second + 10 * deltaTime * currentSpeed.second);
         }
-        if (distanceToCurrentTarget() < epsilon) this.targetPlace = path.nextCoordinate();
+        if (distanceToCurrentTarget() < epsilon)
+        {
+            this.targetPlace = path.nextCoordinate();
+            dcs.setYaw(1);
+            yawTime = (double) System.currentTimeMillis() / 1000;
+
+        }
         Pair<Double, Double> newSpeed = getTargetSpeed();
-        if (newSpeed.first > 0.0) dcs.moveForward(newSpeed.first.floatValue());
-        if (newSpeed.first < 0.0) dcs.moveLeft(-newSpeed.first.floatValue());
-        if (newSpeed.second > 0.0) dcs.moveBackward(newSpeed.second.floatValue());
-        if (newSpeed.second < 0.0) dcs.moveForward(-newSpeed.second.floatValue());
+        dcs.setProgressiveCommandEnabled(true);
+        dcs.setProgressiveCommandCombinedYawEnabled(true);
+        if ((double) System.currentTimeMillis() / 1000 > yawTime + 0.5) {
+            dcs.setYaw(0);
+            if (newSpeed.first > 0.0) dcs.moveRight(newSpeed.first.floatValue());
+            if (newSpeed.first < 0.0) dcs.moveLeft(newSpeed.first.floatValue());
+            if (newSpeed.second > 0.0) dcs.moveBackward(newSpeed.second.floatValue());
+            if (newSpeed.second < 0.0) dcs.moveForward(newSpeed.second.floatValue());
+        }
         currentSpeed = newSpeed;
     }
 

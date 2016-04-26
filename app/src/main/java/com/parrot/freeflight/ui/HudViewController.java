@@ -164,9 +164,9 @@ public class HudViewController
 		btnTakeOff = new Button(res, R.drawable.btn_take_off_normal, R.drawable.btn_take_off_pressed, Align.BOTTOM_CENTER);		
 		btnLand = new Button(res, R.drawable.btn_landing, R.drawable.btn_landing_pressed, Align.BOTTOM_CENTER);      
 		btnLand.setVisible(false);
-		btnFlightPaths = new Button(res, R.drawable.btn_photo, R.drawable.btn_photo_pressed, Align.BOTTOM_RIGHT); // Modified!
+		btnFlightPaths = new Button(res, R.drawable.btn_take_off_normal, R.drawable.btn_take_off_pressed, Align.BOTTOM_RIGHT); // Modified!
 		btnFlightPaths.setVisible(true); // Modified!
-		btnEnableFlyPath = new Button(res, R.drawable.btn_photo, R.drawable.btn_photo_pressed, Align.BOTTOM_LEFT); // Modified!
+		btnEnableFlyPath = new Button(res, R.drawable.btn_take_off_normal, R.drawable.btn_take_off_pressed, Align.BOTTOM_LEFT); // Modified!
 		btnEnableFlyPath.setVisible(true); // Modified!
 		
 		Image topBarBg = new Image(res, R.drawable.barre_haut, Align.TOP_CENTER);
