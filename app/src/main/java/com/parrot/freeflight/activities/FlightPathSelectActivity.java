@@ -63,9 +63,4 @@ public class FlightPathSelectActivity extends Activity {
         });
 
     }
-
-    public void flightPathSelectOnClick(View v){
-        super.onBackPressed();
-    }
-
 }

@@ -679,17 +679,9 @@ public class ControlDroneActivity
         {
             public void onClick(View v)
             {
-                /*
                 if (droneControlService != null) {
                     Intent flightPathSelectActivity = new Intent(ControlDroneActivity.this, FlightPathSelectActivity.class);
                     startActivityForResult(flightPathSelectActivity,40); // 40 on randomilla valittu
-                }
-                */
-                if (rightButtonEnabled) {
-                    rightButtonEnabled = false;
-                }
-                else {
-                    rightButtonEnabled = true;
                 }
             }
         });

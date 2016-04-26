@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,23 +11,14 @@
 
     <ListView
         android:layout_width="match_parent"
-        android:layout_height="525dp"
+        android:layout_height="match_parent"
         android:id="@+id/listViewFiles"
         android:layout_gravity="center|top"
         android:background="#5b5b5b"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
         android:layout_row="0"
-        android:layout_column="0" />
+        android:layout_column="0"
+        android:layout_marginLeft="32dp"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
 
-    <Button
-        android:layout_width="346dp"
-        android:layout_height="wrap_content"
-        android:text="Select Flight Path"
-        android:id="@+id/buttonSelectFlightPath"
-        android:onClick="flightPathSelectOnClick"
-        android:layout_alignBottom="@+id/listView"
-        android:layout_alignParentEnd="true"
-        android:layout_row="1"
-        android:layout_column="0" />
-</GridLayout>
+</RelativeLayout>
