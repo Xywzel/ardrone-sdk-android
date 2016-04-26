@@ -49,18 +49,14 @@ public class FlightController {
         if (distanceToCurrentTarget() < epsilon)
         {
             this.targetPlace = path.nextCoordinate();
-//            dcs.setYaw(1);
             yawTime = (double) System.currentTimeMillis() / 1000;
 
         }
         Pair<Double, Double> newSpeed = getTargetSpeed();
         dcs.setProgressiveCommandEnabled(true);
         dcs.setProgressiveCommandCombinedYawEnabled(true);
-//        if ((double) System.currentTimeMillis() / 1000 > yawTime + 0.5) {
-//        dcs.setYaw(0);
         dcs.moveRight(newSpeed.first.floatValue());
         dcs.moveBackward(newSpeed.second.floatValue());
-//        }
         currentSpeed = newSpeed;
     }
 
@@ -87,6 +83,6 @@ public class FlightController {
         double dx = targetPlace.first - currentPlace.first;
         double dy = targetPlace.second - currentPlace.second;
         double scale = Math.max(Math.abs(dx), Math.abs(dy));
-        return new Pair<Double, Double>(dx / scale, dy / scale);
+        return new Pair<Double, Double>(0.5 * dx / scale, 0.5 * dy / scale);
     }
 }
