@@ -102,6 +102,8 @@ public class ControlDroneActivity
 
     private ControlRunner controlRunner;
 
+    private boolean rightButtonEnabled;
+
     private DroneControlService droneControlService;
     private FlyPathService flyPathService;
     private ApplicationSettings settings;
@@ -255,7 +257,7 @@ public class ControlDroneActivity
         view.setRecordButtonEnabled(false);
 
         flyPathEnabled = false;
-
+        rightButtonEnabled = false;
     }
     
     private void applyHandDependendTVControllers()
@@ -683,21 +685,11 @@ public class ControlDroneActivity
                     startActivityForResult(flightPathSelectActivity,40); // 40 on randomilla valittu
                 }
                 */
-                if (!flyPathEnabled) {
-                    flyPathEnabled = true;
-                    droneControlService.setProgressiveCommandEnabled(true);
-                    droneControlService.setProgressiveCommandCombinedYawEnabled(true);
-                    droneControlService.setYaw(1);
-
-                    Log.d("FlyPath", "oikea nappi päälle");
-                } else {
-                    flyPathEnabled = false;
-                    droneControlService.setProgressiveCommandEnabled(false);
-                    droneControlService.setProgressiveCommandCombinedYawEnabled(false);
-                    droneControlService.setYaw(0);
-
-
-                    Log.d("FlyPath", "oikea nappi pois");
+                if (rightButtonEnabled) {
+                    rightButtonEnabled = false;
+                }
+                else {
+                    rightButtonEnabled = true;
                 }
             }
         });
