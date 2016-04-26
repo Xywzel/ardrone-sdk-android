@@ -17,7 +17,7 @@ public class FlightController {
     public double time;
     public double yawTime;
 
-    private static double epsilon = 1.0;
+    private static double epsilon = 5.0;
 
     public FlightController(FlightPath path, DroneControlService dcs){
         this.path = path;
@@ -58,7 +58,8 @@ public class FlightController {
         dcs.setProgressiveCommandCombinedYawEnabled(true);
 //        if ((double) System.currentTimeMillis() / 1000 > yawTime + 0.5) {
 //        dcs.setYaw(0);
-        dcs.moveRight(newSpeed.first.floatValue());dcs.moveBackward(newSpeed.second.floatValue());
+        dcs.moveRight(newSpeed.first.floatValue());
+        dcs.moveBackward(newSpeed.second.floatValue());
 //        }
         currentSpeed = newSpeed;
     }

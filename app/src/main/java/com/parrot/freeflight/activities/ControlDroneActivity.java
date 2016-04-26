@@ -164,7 +164,7 @@ public class ControlDroneActivity
         {
             droneControlService = ((DroneControlService.LocalBinder) service).getService();
             onDroneServiceConnected();
-            controlRunner = new ControlRunner(droneControlService, "todo");
+            controlRunner = new ControlRunner(droneControlService);
         }
 
         public void onServiceDisconnected(ComponentName name)

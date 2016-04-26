@@ -18,27 +18,29 @@ public class ControlRunner extends Thread {
 
     private final Object lock = new Object();
 
-    private FlightPath flightPath;
     private FlightController flightController;
 
-    public ControlRunner(DroneControlService dcs, String filename){
-        //fc = FlightController.fromFile(filename, dcs);
-
+    public ControlRunner(DroneControlService dcs){
         Vector<Pair<Double, Double>> path = new Vector<Pair<Double, Double>>();
 
-        Pair<Double, Double> p1 = new Pair<Double, Double>(1.0,1.0);
-        Pair<Double, Double> p2 = new Pair<Double, Double>(1.0,2.0);
-        Pair<Double, Double> p3 = new Pair<Double, Double>(2.0,2.0);
-        Pair<Double, Double> p4 = new Pair<Double, Double>(2.0,1.0);
+        path.add(new Pair<Double, Double>( 0.0,  0.0));
+        path.add(new Pair<Double, Double>(-1.0, -1.0));
+        path.add(new Pair<Double, Double>( 1.0, -2.0));
+        path.add(new Pair<Double, Double>(-1.0, -3.0));
+        path.add(new Pair<Double, Double>( 1.0, -4.0));
+        path.add(new Pair<Double, Double>(-1.0, -5.0));
+        path.add(new Pair<Double, Double>( 1.0, -6.0));
+        path.add(new Pair<Double, Double>(-1.0, -7.0));
+        path.add(new Pair<Double, Double>( 1.0, -8.0));
+        path.add(new Pair<Double, Double>(-1.0, -9.0));
+        path.add(new Pair<Double, Double>( 1.0,-10.0));
 
-        path.add(p1);
-        path.add(p2);
-        //path.add(p3);
-        //path.add(p4);
-
-        flightPath = new FlightPath(path);
+        FlightPath flightPath = new FlightPath(path);
         flightController = new FlightController(flightPath, dcs);
+    }
 
+    public ControlRunner(DroneControlService dcs, String filename){
+        flightController = FlightController.fromFile(filename, dcs);
     }
 
     @Override

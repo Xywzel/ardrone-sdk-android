@@ -26,7 +26,7 @@ public class FlightPath {
             centralCoordinates.add(new Pair<Double, Double>(x,y));
         }
         normalizedCoordinates = new Vector<Pair<Double, Double>>();
-        Double factor = 100.0 / maxDist;
+        Double factor = 100.0 / Math.sqrt(maxDist);
         for (Pair<Double, Double> coord : centralCoordinates){
             normalizedCoordinates.add(new Pair<Double, Double>(coord.first * factor, coord.second * factor));
         }
