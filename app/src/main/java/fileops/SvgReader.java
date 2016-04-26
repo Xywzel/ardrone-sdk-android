@@ -1,6 +1,7 @@
 package fileops;
 
 import android.os.Environment;
+import android.util.Log;
 import android.util.Pair;
 
 import java.io.BufferedReader;
@@ -24,9 +25,10 @@ public class SvgReader {
     public Vector<Pair<Double, Double>> coordinates;
     public SvgReader (String filename) {
         String pathLine = null;
+        Log.d("SvgReader", "Reading file " + filename);
         try {
             File sdcard = Environment.getExternalStorageDirectory();
-            File file = new File(sdcard, filename);
+            File file = new File(sdcard, "FreeFlight/" + filename);
             FileReader fr = new FileReader(file);
             BufferedReader br = new BufferedReader(fr);
             for (String line; (line = br.readLine()) != null; ){
@@ -40,14 +42,14 @@ public class SvgReader {
             br.close();
             fr.close();
         } catch (FileNotFoundException e) {
-            System.out.println("This here is a missing file problem, sir.");
+            Log.d("SvgReader", "This here is a missing file problem, sir.");
             e.printStackTrace();
         } catch (IOException e) {
-            System.out.println("We can't read next line, sir.");
+            Log.d("SvgReader", "We can't read next line, sir.");
             e.printStackTrace();
         }
         if (pathLine == null) {
-            System.out.println("There was no path there");
+            Log.d("SvgReader", "There was no path there");
         } else {
             String simplePath = pathLine.replaceAll("(d=)|[MLZmlz]|\"", "").trim();
             String[] places = simplePath.split(" ");
@@ -58,5 +60,6 @@ public class SvgReader {
                 coordinates.add(new Pair<Double, Double>(a,b));
             }
         }
+        Log.d("SvgReader", "Done");
     }
 }
