@@ -60,6 +60,6 @@ public class SvgReader {
                 coordinates.add(new Pair<Double, Double>(a,b));
             }
         }
-        Log.d("SvgReader", "Done");
+        Log.d("SvgReader", "Done got " + coordinates.size() + " pairs");
     }
 }

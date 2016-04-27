@@ -17,8 +17,6 @@ public class FlightController {
     public double time;
     public double yawTime;
 
-    private static double epsilon = 5.0;
-
     public FlightController(FlightPath path, DroneControlService dcs){
         this.path = path;
         this.currentPlace = new Pair<Double, Double>(0.0, 0.0);
@@ -36,22 +34,20 @@ public class FlightController {
     }
 
     public void update() {
+        double deltaTime = 0.0;
         if (time == 0.0) {
             time = (double) System.currentTimeMillis() / 1000.0;
         } else {
             double currentTime = (double) System.currentTimeMillis() / 1000.0;
-            double deltaTime = currentTime - time;
+            deltaTime = currentTime - time;
             time = currentTime;
             currentPlace = new Pair<Double, Double>(
-                    currentPlace.first + 10 * deltaTime * currentSpeed.first,
-                    currentPlace.second + 10 * deltaTime * currentSpeed.second);
+                    currentPlace.first + 10.0 * deltaTime * currentSpeed.first,
+                    currentPlace.second + 10.0 * deltaTime * currentSpeed.second);
         }
-        if (distanceToCurrentTarget() < epsilon)
-        {
-            this.targetPlace = path.nextCoordinate();
-            yawTime = (double) System.currentTimeMillis() / 1000;
+        double epsilon = 9.0 * deltaTime * Math.sqrt(currentSpeed.first*currentSpeed.first + currentSpeed.second*currentSpeed.second);
+        if (distanceToCurrentTarget() < epsilon) this.targetPlace = path.nextCoordinate();
 
-        }
         Pair<Double, Double> newSpeed = getTargetSpeed();
         dcs.setProgressiveCommandEnabled(true);
         dcs.setProgressiveCommandCombinedYawEnabled(true);

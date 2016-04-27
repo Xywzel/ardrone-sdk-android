@@ -692,21 +692,20 @@ public class ControlDroneActivity
         {
             public void onClick(View v)
             {
-                if (controlRunner == null) controlRunner = new ControlRunner(droneControlService, pathFileName);
-
                 if (!flyPathEnabled) {
+                    if (pathFileName.isEmpty()) controlRunner = new ControlRunner(droneControlService);
+                    else controlRunner = new ControlRunner(droneControlService, pathFileName);
+                    Log.d("FlyPath", "Created new FlyPath control runner from file: " + pathFileName);
                     flyPathEnabled = true;
                     droneControlService.setProgressiveCommandEnabled(true);
                     droneControlService.setProgressiveCommandCombinedYawEnabled(true);
                     controlRunner.start();
-
                     Log.d("FlyPath", "flight started");
                 } else {
                     flyPathEnabled = false;
                     droneControlService.setProgressiveCommandEnabled(false);
                     droneControlService.setProgressiveCommandCombinedYawEnabled(false);
                     controlRunner.end();
-
                     Log.d("FlyPath", "flight stopped");
                 }
             }

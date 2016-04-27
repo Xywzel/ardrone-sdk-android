@@ -1,5 +1,6 @@
 package fileops;
 
+import android.util.Log;
 import android.util.Pair;
 
 import java.util.Vector;
@@ -14,6 +15,7 @@ public class FlightPath {
     public Vector<Pair<Double, Double>> normalizedCoordinates;
     private int currentIndex;
     public FlightPath(Vector<Pair<Double, Double>> coordinates){
+        Log.d("FlightPath", "Creating FlightPath");
         currentIndex = 0;
         double maxDist = 0.0f;
         Vector<Pair<Double, Double>> centralCoordinates = new Vector<Pair<Double, Double>>();
@@ -30,10 +32,12 @@ public class FlightPath {
         for (Pair<Double, Double> coord : centralCoordinates){
             normalizedCoordinates.add(new Pair<Double, Double>(coord.first * factor, coord.second * factor));
         }
+        Log.d("FlightPath", "FlightPath done");
     }
     public Pair<Double, Double> nextCoordinate(){
         Pair<Double, Double> next = normalizedCoordinates.elementAt(currentIndex);
         currentIndex = (currentIndex + 1) % normalizedCoordinates.size();
+        Log.d("FlightPath", "Returning new coordinates: " + next.first + " " + next.second);
         return next;
     }
 }
